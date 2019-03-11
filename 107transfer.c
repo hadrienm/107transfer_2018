@@ -21,22 +21,28 @@ int verify_h(char **av)
 void calcul(int **tab, int **taille, double **resultat, int ac)
 {
     int place = ac - 1;
+    double divideur = 1;
     double save = 0;
     int height = 0;
     double res = 0;
+    double resu = 0;
     for (int i = 0; i != ac; ++i)resultat[i][0] = 1;
-    for (double i = 0.000; i <= 1; i += 0.001) {
+    for (double i = 0.000; i <= 1.001; i += 0.001) {
+        divideur = 1;
         for (; place != -1; place--) {
             height = taille[place][0] - 1;
             for (int k = 0; k != height + 1; height--) {
-                resultat[place][0] = (double)(tab[place][height] * i);
+                resultat[place][0] = (double)((tab[place][height] / divideur));
                 save = resultat[place][0];
+                res *= i;
                 res += save;
                 save = 0;
             }
-            printf("%g %f\n", i, res);
+            divideur = res;
+            resu = res;
             res = 0;
         }
+        printf("%0.3f -> %0.5f\n", i, resu);
         if (place <= -1)place = ac -1;
         res = 0;
         save = 0;
