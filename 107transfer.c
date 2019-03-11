@@ -20,19 +20,26 @@ int verify_h(char **av)
 
 void calcul(int **tab, int **taille, double **resultat, int ac)
 {
+    int place = ac - 1;
+    double save = 0;
+    int height = 0;
+    double res = 0;
     for (int i = 0; i != ac; ++i)resultat[i][0] = 1;
-    int place = ac - 2;
-    int k = 0;
-    int save = 0;
-    for (float i = 0.000; i != 1; i += 0.001) {
-        save = taille[place][0];
-        for (k = 0; k != taille[place][0]; k++) {
-            resultat[place][0] *= i;
-            resultat[place][0] += (double)(tab[place][save]);
-            save--;
+    for (double i = 0.000; i <= 1; i += 0.001) {
+        for (; place != -1; place--) {
+            height = taille[place][0] - 1;
+            for (int k = 0; k != height + 1; height--) {
+                resultat[place][0] = (double)(tab[place][height] * i);
+                save = resultat[place][0];
+                res += save;
+                save = 0;
+            }
+            printf("%g %f\n", i, res);
+            res = 0;
         }
-        printf("%g %0.5f\n", i, resultat[place]);
-        place--;
+        if (place <= -1)place = ac -1;
+        res = 0;
+        save = 0;
     }
 }
 
@@ -52,17 +59,18 @@ int main(int ac, char **av)
         for (k = 0; av[i][k] != '\0'; k++);
         tab[i - 1] = malloc(sizeof(int) * (k + 1));
         taille[i - 1] = malloc(sizeof(int) * (2));
-        resultat[i - 1] = malloc(sizeof(double) * (2));
+        resultat[i - 1] = malloc(sizeof(double) * (3));
         for (int j = 0; av[i][j] != '\0'; j++) {
             if (av[i][j] <= 57 && av[i][j] >= 48) {
                 tab[i - 1][place] = (av[i][j] - 48);
-                taille[i - 1][0] = (place + 1);
                 place++;
             }
         }
+        taille[i - 1][0] = place;
     }
     tab[i - 1] = NULL;
     taille[i - 1] = NULL;
+    resultat[i - 1] = NULL;
     ac--;
     calcul(tab, taille, resultat, ac);
 }
