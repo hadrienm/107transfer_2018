@@ -1,4 +1,4 @@
-NAME	= program
+NAME	= 107transfer
 
 CC	= gcc
 
