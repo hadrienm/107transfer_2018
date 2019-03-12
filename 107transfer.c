@@ -60,6 +60,7 @@ int main(int ac, char **av)
     double **resultat = malloc(sizeof(double) * (ac + 1));
     if (ac == 2 && verify_h(av) == 1)return 0;
     if (ac < 3)return 84;
+    if (ac % 2 == 0)return 84;
     for (int i = 1; i != ac; i++)for (int j = 0; av[i][j] != '\0'; j++)if (av[i][j] > 57 || av[i][j] < '*')return 84;
     for (i = 1; i != ac; i++) {
         place = 0;
