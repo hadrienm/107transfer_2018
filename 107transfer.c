@@ -32,17 +32,20 @@ void calcul(int **tab, int **taille, double **resultat, int ac)
         for (; place != -1; place--) {
             height = taille[place][0] - 1;
             for (int k = 0; k != height + 1; height--) {
-                resultat[place][0] = (double)((tab[place][height] / divideur));
-                save = resultat[place][0];
-                res *= i;
-                res += save;
-                save = 0;
+                if (divideur != 0) {
+                    resultat[place][0] = (double)((tab[place][height] / divideur));
+                    save = resultat[place][0];
+                    res *= i;
+                    res += save;
+                    save = 0;
+                }
             }
             divideur = res;
             resu = res;
             res = 0;
         }
-        printf("%0.3f -> %0.5f\n", i, resu);
+        if (divideur != 0)printf("%0.3f -> %0.5f\n", i, resu);
+        else printf("%0.3f -> %0.5f\n",i, 0.000000);
         if (place <= -1)place = ac -1;
         res = 0;
         save = 0;
