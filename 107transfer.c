@@ -18,7 +18,33 @@ int verify_h(char **av)
     return 0;
 }
 
-char *print_until_comma(char *str, char *res)
+char *lol(char *str, char *res, double resu, int sig)
+{
+    char print[50];
+    if (res[sig] >= 53) {
+        resu += 0.00001;
+        sprintf(print, "%0.10f", resu);
+    }
+    else return str;
+    double resul = 0;
+    int i = 0;
+    int save = 1000;
+    for (;  i != save && res[i] != '\0'; i++) {
+        if (res[i] == '.')save = (i + 6);
+    }
+    str = malloc(sizeof(char) *(i + 1));
+    i = 0;
+    for (;  i != save && res[i] != '\0'; i++) {
+        str[i] = res[i];
+    }
+    resul = atof(res);
+    sprintf(print, "%0.5f", resul);
+    for (i = 0;  i != save && print[i] != '\0'; i++)
+        str[i] = print[i];
+    return str;
+}
+
+char *print_until_comma(char *str, char *res, double resu)
 {
     double resul = 0;
     char print[50];
@@ -36,7 +62,16 @@ char *print_until_comma(char *str, char *res)
     sprintf(print, "%0.5f", resul);
     for (i = 0;  i != save && print[i] != '\0'; i++)
         str[i] = print[i];
+    str = lol(str, res, resu, i);
     return str;
+}
+
+int comparateur(char *str, char *str2)
+{
+    if (strlen(str) != strlen(str2))return 1;
+    for (int i = 0; str[i] != '\0'; ++i)
+        if (str[i] != str2[i])return 1;
+    return 0;
 }
 
 void calcul(int **tab, int **taille, double **resultat, int ac)
@@ -68,9 +103,9 @@ void calcul(int **tab, int **taille, double **resultat, int ac)
             res = 0;
         }
         sprintf(print, "%0.10f", resu);
-        str = print_until_comma(str, print);
-        if (divideur != 0)printf("%0.3f -> %s\n", i, str);
-        else if (i != 0)printf("%0.3f -> %0.5f\n",i, -0.000000);
+        str = print_until_comma(str, print, resu);
+        if (comparateur(str, "-0.00000") == 0)printf("%0.3f -> %0.5f\n",i, 0.000000);
+        else if (divideur != 0)printf("%0.3f -> %s\n", i, str);
         else printf("%0.3f -> %0.5f\n",i, 0.000000);
         if (place <= -1)place = ac -1;
         res = 0;
